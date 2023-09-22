@@ -19,15 +19,39 @@
 </div>
 
 <style lang="scss">
+    :global(.struktogram__block) {
+        > .statement {
+            border-bottom: $struc-border-width solid $struc-border-color;
+            &:last-child {
+                border-bottom: unset;
+            }
+        }
+    }
     .struktogram {
         color: $struc-color;
-        background-color: rgb(52, 3, 3);
         &__signature {
-            border-radius: 1em;
-            //border: @include s_boder;
+            position: relative;
+            border-radius: 2em;
+            width: fit-content;
+            padding-inline: 1em;
+            padding-block: 0.5em;
+            margin-inline: auto;
+            margin-block-end: 1em;
+            border: $struc-border-width solid $struc-border-color;
+            &::before {
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                content: "";
+                width: $struc-border-width;
+                height: 1.2em;
+                background-color: $struc-border-color;
+            }
+            background-color: rgb(52, 3, 3);
         }
         &__block {
-            //border: @include s_boder;
+            border: $struc-border-width solid $struc-border-color;
+            background-color: rgb(52, 3, 3);
         }
     }
 </style>

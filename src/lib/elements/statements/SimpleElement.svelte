@@ -9,7 +9,9 @@
 </div>
 
 <style lang="scss">
-    .simple{
+    .simple {
         text-align: center;
+        padding-block: 0.425em;
+        padding-inline: 1em;
     }
 </style>
