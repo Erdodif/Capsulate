@@ -13,7 +13,7 @@
                     caseblock.condition == "else" ? "condition__else" : ""
                 }`}
             >
-                <input type="text" bind:value={caseblock.condition}/>
+                <input type="text" bind:value={caseblock.condition} />
             </div>
             <div class="block">
                 {#each caseblock.block as statement}
@@ -35,12 +35,12 @@
         gap: 4px;
         background: $struc-color;
         .case {
-            input{
-                background:transparent;
-                width:100%;
+            input {
+                background: transparent;
+                width: 100%;
                 height: 100%;
                 font-size: 1em;
-                border:unset;
+                border: unset;
                 text-align: center;
                 padding-block: 0.425em;
                 padding-inline: 1em;
@@ -56,9 +56,11 @@
                 }
                 border-bottom: $struc-border;
                 &__else {
-                    color:transparent;
-                    &::before{
-                        content:unset;
+                    input {
+                        color: transparent;
+                    }
+                    &::before {
+                        content: unset;
                     }
                     &::after {
                         @include s_if_pseudo(-20, -0.6, right);

@@ -6,7 +6,7 @@
     /*UserPreference variables*/
     --font-size: 20px;
     --font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    
+
     /*Applied user preferences*/
     font-size: var(--font-size);
     font-family: var(--font-family);
@@ -27,13 +27,16 @@
 }
 
 body {
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
+    position: fixed;
+    inset:0;
+    max-height: 100vh;
+    margin: 0 !important;
+    padding: 0 !important;
     overflow: auto;
-  
-    @supports (min-height: 100dvh) {
-      min-height: 100dvh;
+    height: 100%;
+
+    @supports (max-height: 100dvh) {
+        max-height: 100dvh;
     }
 
     background-color: rgb(17, 32, 56);
