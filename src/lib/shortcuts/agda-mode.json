@@ -1,0 +1,170 @@
+[
+    {
+        "character": "\\x",
+        "keyBind": "×"
+    },
+    {
+        "character": "ˢ",
+        "keyBind":"\\^s"
+    },
+    {
+        "character": "λ",
+        "keyBind":"\\Gl"
+    },
+    {
+        "character": "ᵢ",
+        "keyBind":"\\_i"
+    },
+    {
+        "character": "′",
+        "keyBind":"\\'1"
+    },
+    {
+        "character": "ⁿ",
+        "keyBind":"\\^n"
+    },
+    {
+        "character": "₁",
+        "keyBind":"\\_1"
+    },
+    {
+        "character": "₂",
+        "keyBind":"\\_2"
+    },
+    {
+        "character": "₃",
+        "keyBind":"\\_3"
+    },
+    {
+        "character": "₄",
+        "keyBind":"\\_4"
+    },
+    {
+        "character": "ₖ",
+        "keyBind":"\\_k"
+    },
+    {
+        "character": "ₘ",
+        "keyBind":"\\_m"
+    },
+    {
+        "character": "ₙ",
+        "keyBind":"\\_n"
+    },
+    {
+        "character": "ℕ",
+        "keyBind": "\\bN"
+    },
+    {
+        "character": "↑",
+        "keyBind":"\\u"
+    },
+    {
+        "character": "→",
+        "keyBind": "\\r"
+    },
+    {
+        "character": "↦",
+        "keyBind": "\\r-|"
+    },
+    {
+        "character": "∀",
+        "keyBind":"\\all"
+    },
+    {
+        "character": "∈",
+        "keyBind":"\\in"
+    },
+    {
+        "character": "∋",
+        "keyBind": "\\ni"
+    },
+    {
+        "character": "∌",
+        "keyBind": "\\nin"
+    },
+    {
+        "character": "∘",
+        "keyBind":"\\o"
+    },
+    {
+        "character": "∷",
+        "keyBind":"\\::"
+    },
+    {
+        "character": "∼",
+        "keyBind":"\\~"
+    },
+    {
+        "character": "≈",
+        "keyBind":"\\~~"
+    },
+    {
+        "character": "≡",
+        "keyBind":"\\=="
+    },
+    {
+        "character": "≤",
+        "keyBind":"\\<="
+    },
+    {
+        "character": "⊄",
+        "keyBind":"\\subn"
+    },
+    {
+        "character": "⊎",
+        "keyBind":"\\u+"
+    },
+    {
+        "character": "⊔",
+        "keyBind":"\\lub"
+    },
+    {
+        "character": "⊢",
+        "keyBind":"\\|-"
+    },
+    {
+        "character": "⊤",
+        "keyBind": "\\top"
+    },
+    {
+        "character": "⊥",
+        "keyBind": "\\bot"
+    },
+    {
+        "character": "♭",
+        "keyBind": "\\b"
+    },
+    {
+        "character": "♯",
+        "keyBind":"\\#"
+    },
+    {
+        "character": "⟨",
+        "keyBind":"\\<"
+    },
+    {
+        "character": "⟩",
+        "keyBind":"\\>"
+    },
+    {
+        "character": "⦃",
+        "keyBind":"\\{{"
+    },
+    {
+        "character": "⦄",
+        "keyBind":"\\}}"
+    },
+    {
+        "character": "⦅",
+        "keyBind":"\\(("
+    },
+    {
+        "character": "⦆",
+        "keyBind":"\\))"
+    },
+    {
+        "character": "ⱼ",
+        "keyBind":"\\_j"
+    }
+]
