@@ -1,0 +1,24 @@
+@use "./variables" as *;
+
+@mixin phone {
+    @media screen and (max-width: 550px) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media screen and (min-width: 550px) and (max-width: 1000px) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media screen and (min-width: 1000px) {
+        @content;
+    }
+}
+
+@mixin s_border {
+    border: $struc-border-width solid $struc-border-color #00ccff;
+    border-collapse: collapse;
+}

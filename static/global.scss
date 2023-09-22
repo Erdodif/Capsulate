@@ -1,0 +1,10 @@
+body{
+    background-color:rgb(17, 32, 56);
+    color: white;
+    @include tablet{
+        background-color:rgb(17, 56, 55);
+    }
+    @include phone {
+        background-color:rgb(79, 40, 12);
+    }
+}
