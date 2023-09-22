@@ -4,7 +4,7 @@ A yet another struktogram editor, this time, it's svelte🎉.
 
 ## What is a structogram anyway?
 
-A Structogram(or struktogram) is an algorithm visualization format, wich is (when used correctly) programming language independent.
+A Structogram (or struktogram) is an algorithm visualization format, which is (when used correctly) programming language independent.
 
 It is heavily used in German and Hungarian universities to "write" pseudocode but instead of syntax highlight, the control elements have different visual representations.
 
