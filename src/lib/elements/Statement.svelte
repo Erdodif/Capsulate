@@ -4,36 +4,36 @@
         IfStatement,
         LoopStatement,
         type AnyStatement,
+        type Statement,
+        SimpleStatement,
     } from "$lib/classes/Statement";
+    import { error } from "@sveltejs/kit";
     import IfElement from "./statements/IfElement.svelte";
     import LoopElement from "./statements/LoopElement.svelte";
     import SimpleElement from "./statements/SimpleElement.svelte";
     import SwitchElement from "./statements/SwitchElement.svelte";
 
-    export let statement:AnyStatement;
-
-    const variant = () => {
-        if (statement instanceof SwitchStatement) return "switch";
-        if (statement instanceof IfStatement) return "if";
-        if (statement instanceof LoopStatement) return "loop";
-        return "simple";
-    };
+    export let statement: Statement;
 </script>
 
 <div class="statement">
-    {#if variant() == "switch"}
+    {#if statement instanceof SwitchStatement}
         <SwitchElement {statement} />
-    {:else if variant() == "if"}
+    {:else if statement instanceof IfStatement}
         <IfElement {statement} />
-    {:else if variant() == "loop"}
+    {:else if statement instanceof LoopStatement}
         <LoopElement {statement} />
-    {:else}
+    {:else if statement instanceof SimpleStatement}
         <SimpleElement {statement} />
+    {:else}
+        @error("Invalid Statement inserted!")
+        {console.error(statement)}
     {/if}
 </div>
 
 <style lang="scss">
     .statement {
         color: $struc-color;
+        background: $struc-background;
     }
 </style>

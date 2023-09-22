@@ -1,4 +1,41 @@
+:root {
+    --struktogram-text-color: black;
+    --struktogram-border-color: black;
+    --struktogram-background-color: var(--primary);
+
+    /*UserPreference variables*/
+    --font-size: 20px;
+    --font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    
+    /*Applied user preferences*/
+    font-size: var(--font-size);
+    font-family: var(--font-family);
+
+    /*Default theme (temporal, until Material color present)*/
+    --primary: #bb86fc;
+    --primary-variant: #3700b3;
+    --on-primary: #000000;
+    --secondary: #03dac6;
+    --secondary-variant: #018786;
+    --on-secondary: #000000;
+    --error: #cf6679;
+    --on-error: #000000;
+    --background: #121212;
+    --on-background: #ffffff;
+    --surface: #222222;
+    --on-surface: #ffffff;
+}
+
 body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+  
+    @supports (min-height: 100dvh) {
+      min-height: 100dvh;
+    }
+
     background-color: rgb(17, 32, 56);
     color: white;
     @include tablet {

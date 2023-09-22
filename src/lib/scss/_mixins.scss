@@ -1,4 +1,5 @@
 @use "./variables" as *;
+@use "sass:math";
 
 @mixin phone {
     @media screen and (max-width: 550px) {
@@ -21,4 +22,37 @@
 @mixin s_border {
     border: $struc-border-width solid $struc-border-color #00ccff;
     border-collapse: collapse;
+}
+
+@mixin s_if_pseudo($skew-factor, $x-offset, $direction) {
+    position: absolute;
+    top: 0;
+    @if $direction == left {
+        left: 0;
+    } @else if $direction == right {
+        right: 0;
+    } @else {
+        @error "Unknown direction #{$direction}."
+    }
+    transform: skewX($skew-factor * 1deg) translateX($x-offset * 250%);
+    content: "";
+    width: $struc-border-width;
+    height: 100%;
+    background: $struc-border-color;
+}
+
+@mixin s_input(){
+    input, textarea{
+        background:transparent;
+        resize: none;
+        width:100%;
+        height: 100%;
+        font-size: 1em;
+        border:unset;
+        text-align: center;
+        padding-block: 0.425em;
+        padding-inline: 1em;
+        box-sizing: border-box;
+        outline: none;
+    }
 }

@@ -1,14 +1,16 @@
 <script lang="ts">
     import type Structogram from "$lib/classes/Structogram";
+    import InputOverlay from "./InputOverlay.svelte";
     import Statement from "./Statement.svelte";
 
     export let structogram: Structogram;
 </script>
 
 <div class="struktogram">
+    <InputOverlay/>
     {#if structogram.variant == "function"}
         <div class="struktogram__signature">
-            {structogram.signature}
+            <input type="text" bind:value={structogram.signature}>
         </div>
     {/if}
     <div class="struktogram__block">
@@ -19,25 +21,22 @@
 </div>
 
 <style lang="scss">
-    :global(.struktogram__block) {
-        > .statement {
-            border-bottom: $struc-border-width solid $struc-border-color;
-            &:last-child {
-                border-bottom: unset;
-            }
-        }
+    :global(.struktogram, .statement) {
+        font-size: 1rem;
+        font-family: monospace;
     }
     .struktogram {
+        margin:1em;
         color: $struc-color;
+        width: min(95dvw, 45rem);
         &__signature {
+            @include s_input;
             position: relative;
             border-radius: 2em;
             width: fit-content;
-            padding-inline: 1em;
-            padding-block: 0.5em;
             margin-inline: auto;
             margin-block-end: 1em;
-            border: $struc-border-width solid $struc-border-color;
+            border: $struc-border;
             &::before {
                 position: absolute;
                 top: 100%;
@@ -47,11 +46,17 @@
                 height: 1.2em;
                 background-color: $struc-border-color;
             }
-            background-color: rgb(52, 3, 3);
+            background-color: $struc-background;
         }
         &__block {
-            border: $struc-border-width solid $struc-border-color;
-            background-color: rgb(52, 3, 3);
+            border: $struc-border;
+            background-color: $struc-background;
+            :global(> .statement) {
+                border-bottom: $struc-border;
+                &:last-child {
+                    border-bottom: unset;
+                }
+            }
         }
     }
 </style>

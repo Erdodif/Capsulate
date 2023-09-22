@@ -7,7 +7,7 @@
 
 <div class="if">
     <div class="condition">
-        {statement.condition}
+        <textarea name="condition" rows="1" bind:value={statement.condition}/>
     </div>
     <div class="true">
         {#each statement.block as element}
@@ -33,39 +33,28 @@
             background-color: $struc-color;
         }
         .condition {
-            padding-block: 0.425em;
-            padding-inline: 1em;
+            @include s_input;
             position: relative;
             grid-area: condition;
             text-align: center;
             resize: both;
             &::before {
-                position: absolute;
-                top: 0;
-                left: 0;
-                transform: skewX(25deg) translateX(420%);
-                content: "";
-                width: $struc-border-width;
-                height: 100%;
-                background: $struc-border-color;
+                @include s_if_pseudo(25,2, left);
             }
-            border-bottom: $struc-border-width solid $struc-border-color;
+            border-bottom: $struc-border;
             &::after {
-                position: absolute;
-                top: 0;
-                right: 0;
-                transform: skewX(-25deg) translateX(-420%);
-                content: "";
-                width: $struc-border-width;
-                height: 100%;
-                background: $struc-border-color;
+                @include s_if_pseudo(-25, -2, right);
             }
         }
         .true {
             grid-area: true;
+            display: grid;
+            align-items: stretch;
         }
         .false {
             grid-area: false;
+            display: grid;
+            align-items: stretch;
         }
     }
 </style>

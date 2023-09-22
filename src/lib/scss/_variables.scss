@@ -1,5 +1,21 @@
+//Structogram specific
 
 $struc-border-width: 3px;
-$struc-border-color: #00ccff;
-$struc-color: $struc-border-color;
+$struc-border-color: var(--struktogram-border-color);
+$struc-color: var(--struktogram-text-color);
+$struc-background: var(--struktogram-background-color);
+$struc-border: $struc-border-width solid $struc-border-color;
 
+//Material branding
+$primary: var(--primary);
+$primary-variant: var(--primary-variant);
+$on-primary: var(--on-primary);
+$secondary: var(--secondary);
+$secondary-variant: var(--secondary-variant);
+$on-secondary: var(--on-secondary);
+$error: var(--error);
+$on-error: var(--on-error);
+$background: var(--background);
+$on-background: var(--on-background);
+$surface: var(--surface);
+$on-surface: var(--on-surface);

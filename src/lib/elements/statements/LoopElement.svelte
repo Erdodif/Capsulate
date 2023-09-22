@@ -7,7 +7,7 @@
 
 <div class={`${statement.reversed ? "loop__reversed" : ""} loop`}>
     <div class="condition">
-        {statement.condition}
+        <input type="text" name="condition" bind:value={statement.condition}>
     </div>
     <div class="block">
         {#each statement.block as element}
@@ -21,8 +21,7 @@
         > .block {
             //background: red;
             > .statement {
-                border-bottom: $struc-border-width solid $struc-border-color;
-                
+                border-bottom: $struc-border;
             }
             > .statement:last-child {
                 border-bottom: unset;
@@ -32,7 +31,7 @@
     :global(.loop-reversed) {
         > .block {
             > .statement {
-                border-top: $struc-border-width solid $struc-border-color;
+                border-top: $struc-border;
                 border-bottom: unset;
             }
             > .statement:last-child {
@@ -49,28 +48,26 @@
             grid-area: border;
             height: 100%;
             content: "";
-            border-bottom: $struc-border-width solid $struc-border-color;
+            border-bottom: $struc-border;
         }
         .condition {
-            padding-block: 0.425em;
-            padding-inline: 1em;
+            @include s_input;
             grid-area: condition;
             text-align: center;
         }
         .block {
             grid-area: block;
-            border-top: $struc-border-width solid $struc-border-color;
-            border-left: $struc-border-width solid $struc-border-color;
+            border-top: $struc-border;
+            border-left: $struc-border;
         }
         &__reversed {
             grid-template-rows: 1fr fit-content;
             grid-template-areas: "border block" "condition condition";
             &::before {
-                border-top: $struc-border-width solid $struc-border-color;
                 border-bottom: unset;
             }
             .block {
-                border-bottom: $struc-border-width solid $struc-border-color;
+                border-bottom: $struc-border;
                 border-top: unset;
             }
         }

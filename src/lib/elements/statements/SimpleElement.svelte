@@ -5,13 +5,14 @@
 </script>
 
 <div class="simple">
-    {statement.content}
+    <input type="text" name="content" bind:value={statement.content}>
 </div>
 
 <style lang="scss">
     .simple {
+        @include s_input;
+        box-sizing: border-box;
+        height: 100%;
         text-align: center;
-        padding-block: 0.425em;
-        padding-inline: 1em;
     }
 </style>

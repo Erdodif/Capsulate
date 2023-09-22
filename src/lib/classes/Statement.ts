@@ -1,6 +1,6 @@
 export type AnyStatement = SimpleStatement | IfStatement | SwitchStatement | LoopStatement
 
-interface Statement { }
+export interface Statement { }
 
 export class Branch implements Statement {
     condition: string;
