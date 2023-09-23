@@ -13,4 +13,8 @@ export default class Structogram {
         this.statements = statements;
         this.variant = variant;
     }
+
+    getStatementById(id:number): Statement | undefined{
+        return this.statements.find(statement => statement.id == id);
+    }
 }
