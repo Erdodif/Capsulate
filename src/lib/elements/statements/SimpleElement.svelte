@@ -4,10 +4,6 @@
     import CustomTextArea from "../CustomTextArea.svelte";
 
     export let statement: StatementStore<SimpleStatement>;
-
-    let rows: number;
-
-    $: rows = ($statement.content.match(/\n/g)?.length ?? 0) + 1;
 </script>
 
 <div class="simple">
