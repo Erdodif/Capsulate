@@ -67,6 +67,7 @@
             inputNode.value.slice(0, inputNode.selectionStart!) +
             char +
             inputNode.value.slice(inputNode.selectionEnd!);
+        inputNode.dispatchEvent(new InputEvent('input',{bubbles:true, cancelable:true}))
         $shortcut = "";
     };
 
