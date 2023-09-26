@@ -33,9 +33,13 @@ export class StructogramStore extends CustomStore<Structogram>{
 }
 
 export class StatementStore<T extends Statement> extends CustomDerivedStore<T, Structogram, StructogramStore>{
-    /*constructor(structogramStore: StructogramStore, initValue: T) {
+    
+    readonly id:number;
+
+    constructor(structogramStore: StructogramStore, initValue: T) {
         super(structogramStore, initValue);
-    }*/
+        this.id = this._value.id;
+    }
 
     protected parentChanged(newValue: Structogram): boolean {
         return this._value.equals(newValue.getStatementById(this._value.id));

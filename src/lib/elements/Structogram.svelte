@@ -1,10 +1,12 @@
 <script lang="ts">
     import InputOverlay from "./InputOverlay.svelte";
     import Statement from "./Statement.svelte";
+    import type { Statement as StatementClass} from "$lib/classes/Statement";
     import type { StructogramStore } from "$lib/stores/structogram";
 
     export let structogram: StructogramStore;
-    const storeOf = (statement:Statement) => structogram.getStoreOf(statement);
+    
+    const storeOf = (statement:StatementClass) => structogram.getStoreOf(statement);
 </script>
 
 <div class="struktogram">

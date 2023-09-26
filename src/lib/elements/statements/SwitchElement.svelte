@@ -1,12 +1,13 @@
 <script lang="ts">
     import type { SwitchStatement } from "$lib/classes/Statement";
+    import type { StatementStore } from "$lib/stores/structogram";
     import Statement from "../Statement.svelte";
 
-    export let statement: SwitchStatement;
+    export let statement: StatementStore<SwitchStatement>;
 </script>
 
 <div class="switch">
-    {#each statement.cases as caseblock}
+    {#each $statement.cases as caseblock, i (i)}
         <div class="case">
             <div
                 class={`condition  ${
@@ -16,8 +17,8 @@
                 <input type="text" bind:value={caseblock.condition} />
             </div>
             <div class="block">
-                {#each caseblock.block as statement}
-                    <Statement {statement} />
+                {#each caseblock.block.map( (stmt) => statement.getStoreOf(stmt) ) as stmt}
+                    <Statement statement={stmt} />
                 {/each}
             </div>
         </div>

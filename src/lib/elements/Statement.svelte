@@ -7,26 +7,29 @@
         type Statement,
         SimpleStatement,
     } from "$lib/classes/Statement";
-    import { error } from "@sveltejs/kit";
     import IfElement from "./statements/IfElement.svelte";
     import LoopElement from "./statements/LoopElement.svelte";
     import SimpleElement from "./statements/SimpleElement.svelte";
     import SwitchElement from "./statements/SwitchElement.svelte";
+    import type { AnyStatementStore } from "$lib/stores/structogram";
 
-    export let statement: Statement;
+    export let statement: AnyStatementStore;
 </script>
 
 <div class="statement">
-    {#if statement instanceof SwitchStatement}
+    {#if $statement instanceof SwitchStatement}
+        <!-- @ts-ignore -->
         <SwitchElement {statement} />
-    {:else if statement instanceof IfStatement}
+    {:else if $statement instanceof IfStatement}
+        <!-- @ts-ignore -->
         <IfElement {statement} />
-    {:else if statement instanceof LoopStatement}
+    {:else if $statement instanceof LoopStatement}
+        <!-- @ts-ignore -->
         <LoopElement {statement} />
-    {:else if statement instanceof SimpleStatement}
+    {:else if $statement instanceof SimpleStatement}
+        <!-- @ts-ignore -->
         <SimpleElement {statement} />
     {:else}
-        @error("Invalid Statement inserted!")
         {console.error(statement)}
     {/if}
 </div>

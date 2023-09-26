@@ -1,16 +1,17 @@
 <script lang="ts">
     import type { LoopStatement } from "$lib/classes/Statement";
+    import type { StatementStore } from "$lib/stores/structogram";
     import Statement from "../Statement.svelte";
 
-    export let statement: LoopStatement;
+    export let statement: StatementStore<LoopStatement>;
 </script>
 
-<div class={`${statement.reversed ? "loop__reversed" : ""} loop`}>
+<div class={`${$statement.reversed ? "loop__reversed" : ""} loop`}>
     <div class="condition">
-        <input type="text" name="condition" bind:value={statement.condition}>
+        <input type="text" name="condition" bind:value={$statement.condition}>
     </div>
     <div class="block">
-        {#each statement.block as element}
+        {#each $statement.block.map(stmt => statement.getStoreOf(stmt)) as element}
             <Statement statement={element} />
         {/each}
     </div>

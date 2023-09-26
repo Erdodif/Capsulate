@@ -30,23 +30,24 @@ export default class Structogram {
     }
 
     createIfStatement(condition: string, block: Statement[], elseblock: Statement[]): IfStatement {
-        let statement = new IfStatement(this.STATEMENT_ID++, condition, block, elseblock);
+        let statement = new IfStatement(this.STATEMENT_ID, condition, block, elseblock);
         this.statementList.set(this.STATEMENT_ID, statement);
         this.STATEMENT_ID++;
         return statement;
     }
 
     createLoopStatement(condition: string, block: Statement[], reversed: boolean = false) {
-        let statement = new LoopStatement(this.STATEMENT_ID++, condition, reversed, block);
+        let statement = new LoopStatement(this.STATEMENT_ID, condition, reversed, block);
         this.statementList.set(this.STATEMENT_ID, statement);
         this.STATEMENT_ID++;
         return statement;
     }
 
     createSwitchStatement(branches: Branch[] = [new Branch()]) {
-        let statement = new SwitchStatement(this.STATEMENT_ID++, branches);
+        let statement = new SwitchStatement(this.STATEMENT_ID, branches);
         this.statementList.set(this.STATEMENT_ID, statement);
         this.STATEMENT_ID++;
         return statement;
     }
+
 }

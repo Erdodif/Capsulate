@@ -1,21 +1,25 @@
 <script lang="ts">
-    import type { IfStatement } from "$lib/classes/Statement";
+    import type {
+        IfStatement,
+        Statement as StatementClass,
+    } from "$lib/classes/Statement";
+    import type { StatementStore } from "$lib/stores/structogram";
     import Statement from "../Statement.svelte";
 
-    export let statement: IfStatement;
+    export let statement: StatementStore<IfStatement>;
 </script>
 
 <div class="if">
     <div class="condition">
-        <textarea name="condition" rows="1" bind:value={statement.condition}/>
+        <textarea name="condition" rows="1" bind:value={$statement.condition} />
     </div>
     <div class="true">
-        {#each statement.block as element}
+        {#each $statement.block.map( (stmt) => statement.getStoreOf(stmt) ) as element}
             <Statement statement={element} />
         {/each}
     </div>
     <div class="false">
-        {#each statement.elseblock as element}
+        {#each $statement.elseblock.map( (stmt) => statement.getStoreOf(stmt) ) as element}
             <Statement statement={element} />
         {/each}
     </div>
@@ -39,7 +43,7 @@
             text-align: center;
             resize: both;
             &::before {
-                @include s_if_pseudo(25,2, left);
+                @include s_if_pseudo(25, 2, left);
             }
             border-bottom: $struc-border;
             &::after {
