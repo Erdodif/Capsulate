@@ -1,20 +1,21 @@
 <script lang="ts">
     import type Structogram from "$lib/classes/Structogram";
+    import type { Writable } from "svelte/store";
     import InputOverlay from "./InputOverlay.svelte";
     import Statement from "./Statement.svelte";
 
-    export let structogram: Structogram;
+    export let structogram: Writable<Structogram>;
 </script>
 
 <div class="struktogram">
     <InputOverlay/>
-    {#if structogram.variant == "function"}
+    {#if $structogram.variant == "function"}
         <div class="struktogram__signature">
-            <input type="text" bind:value={structogram.signature}>
+            <input type="text" bind:value={$structogram.signature}>
         </div>
     {/if}
     <div class="struktogram__block">
-        {#each structogram.statements as statement}
+        {#each $structogram.statements as statement}
             <Statement {statement} />
         {/each}
     </div>

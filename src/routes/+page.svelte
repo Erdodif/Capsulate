@@ -9,30 +9,76 @@
     import { StructogramSerializer } from "$lib/classes/StatementSerializer";
     import Structorgram from "$lib/classes/Structogram";
     import Structogram from "$lib/elements/Structogram.svelte";
-    import { StructogramStore } from "$lib/stores/structogram";
     import { writable } from "svelte/store";
 
-    let struk = new StructogramStore(
-        new Structorgram("Idk man", "function", [
-            new SimpleStatement("Meh"),
-            new IfStatement(
-                "if this is it",
-                [
-                    new LoopStatement("that is loop", false, [
-                        new SimpleStatement("Just loopin' around"),
-                    ]),
+    let struk = writable(StructogramSerializer.fromJson(
+    {
+        type:"function",
+        signature:"idk man",
+        statements:[
+            {
+                type:"if",
+                condition: "if this is it",
+                block:[
+                    {
+                        type:"loop",
+                        condition:"if true",
+                        block:[
+                           {
+                            type:"simple",
+                            content:"just loopin' around"
+                           } 
+                        ]
+                    }
                 ],
-                [new SimpleStatement("SKIP")]
-            ),
-            new LoopStatement("Reverse funny", true, [
-                new SwitchStatement([
-                    new Branch("1", [new SimpleStatement("yes")]),
-                    new Branch("2", [new SimpleStatement("maybe")]),
-                    new Branch("else", [new SimpleStatement("no")]),
-                ]),
-            ]),
-        ])
-    );
+                elseblock:[
+                    {
+                        type:"skip",
+                        content:"SKIP"
+                    }
+                ]
+            },
+            {
+                type:"loop-reverse",
+                condition:"Are you done yet?",
+                block:[
+                    {
+                        type:"switch",
+                        cases:[
+                            {
+                                condition:"1",
+                                block:[
+                                    {
+                                        type:"simple",
+                                        content:"Yes"
+                                    }
+                                ]
+                            },
+                            {
+                                condition:"2",
+                                block:[
+                                    {
+                                        type:"simple",
+                                        content:"Maybe"
+                                    }
+                                ]
+                            },
+                            {
+                                condition:"3",
+                                block:[
+                                    {
+                                        type:"simple",
+                                        content:"No"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+    ));
 </script>
 
 <Structogram structogram={struk} />

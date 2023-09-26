@@ -1,15 +1,12 @@
 export type AnyStatement = SimpleStatement | IfStatement | SwitchStatement | LoopStatement
 
-let AUTO_INCREMENT = 0;
-
 export abstract class Statement {
     readonly id: number
 
-    constructor() {
-        this.id = AUTO_INCREMENT++;
+    constructor(id: number) {
+        this.id = id;
     }
 
-    abstract getStatementById(id: number): Statement | undefined;
     abstract equals(other: Statement | undefined): boolean
 }
 
@@ -17,14 +14,10 @@ export class Branch extends Statement {
     condition: string;
     block: Statement[];
 
-    constructor(condition: string = "", statements: Statement[] = []) {
-        super();
+    constructor(id: number = 0, condition: string = "", statements: Statement[] = []) {
+        super(id);
         this.condition = condition;
         this.block = statements;
-    }
-
-    getStatementById(id: number): Statement | undefined {
-        return this.block.find(statement => statement.id == id);
     }
 
     equals(other: Statement | undefined): boolean {
@@ -43,13 +36,9 @@ export class Branch extends Statement {
 export class SimpleStatement extends Statement {
     content: string;
 
-    constructor(content: string = "") {
-        super();
+    constructor(id: number, content: string = "") {
+        super(id);
         this.content = content;
-    }
-
-    getStatementById(id: number): Statement | undefined {
-        return undefined;
     }
 
     equals(other: Statement | undefined): boolean {
@@ -63,14 +52,9 @@ export class SimpleStatement extends Statement {
 export class IfStatement extends Branch {
     elseblock: Statement[];
 
-    constructor(condition: string = "", success: Statement[] = [], fail: Statement[] = []) {
-        super(condition, success);
+    constructor(id: number, condition: string = "", success: Statement[] = [], fail: Statement[] = []) {
+        super(id, condition, success);
         this.elseblock = fail;
-    }
-
-    getStatementById(id: number): Statement | undefined {
-        return this.block.find(statement => statement.id == id) ??
-            this.elseblock.find(statement => statement.id == id);
     }
 
     equals(other: Statement | undefined): boolean {
@@ -111,18 +95,9 @@ export class SwitchStatement extends Statement {
         }
     }
 
-    constructor(branches: Branch[] = [new Branch()]) {
-        super();
+    constructor(id: number, branches: Branch[] = [new Branch()]) {
+        super(id);
         this.cases = branches;
-    }
-
-    getStatementById(id: number): Statement | undefined {
-        for (const block of this.cases) {
-            let statement = block.block.find(statement => statement.id == id);
-            if (statement) {
-                return statement;
-            }
-        }
     }
 
     equals(other: Statement | undefined): boolean {
@@ -141,8 +116,8 @@ export class SwitchStatement extends Statement {
 export class LoopStatement extends Branch {
     reversed: boolean;
 
-    constructor(condition: string = "", reversed: boolean = false, statements: Statement[] = []) {
-        super(condition, statements);
+    constructor(id: number, condition: string = "", reversed: boolean = false, statements: Statement[] = []) {
+        super(id, condition, statements);
         this.reversed = reversed;
     }
 

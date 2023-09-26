@@ -19,14 +19,15 @@ export type StructogramJson = {
 export class StructogramSerializer {
 
     /**
-     * Deserializes a flat JS Object into Structogram
+     * Deserializes a flat JS Object into a Navigatable, id driven Structogram
      */
     static fromJson(json: StructogramJson): Structogram {
-        let structogram = new Structogram(json.signature, json.type)
+        let structogram = new Structogram(json.signature, json.type);
+        let statemetnSerializer = new StatementSerializer(structogram);
         for (const statementJson of json.statements) {
-            structogram.statements.push(statementJson);
+            structogram.statements.push(statemetnSerializer.fromJson(statementJson));
         }
-        return structogram
+        return structogram;
     }
 
     /**
@@ -51,12 +52,21 @@ export class StructogramSerializer {
  */
 export class StatementSerializer {
 
+    structogram: Structogram;
+
+    constructor(structogram: Structogram) {
+        this.structogram = structogram;
+    }
+
     /**
      * Builds Statement from plain JS object (following the same way as the deserializing methods)
+     * 
+     * Uses the given Structorgram to attach by id.
+     * 
      * @param json The parsed, flat JS Object
      * @returns The type aware Statement
      */
-    static fromJson(json: StatementJson): Statement {
+    fromJson(json: StatementJson): Statement {
         switch (json.type) {
             case "switch":
                 return this.switchFromJson(json);
@@ -85,24 +95,24 @@ export class StatementSerializer {
         return this.simpleToJson(statement as SimpleStatement);
     }
 
-    private static simpleFromJson(json: SimpleStatementJson): SimpleStatement {
-        return new SimpleStatement(json.content);
+    private simpleFromJson(json: SimpleStatementJson): SimpleStatement {
+        return this.structogram.createSimpleStatement(json.content);
     }
 
     private static simpleToJson(statement: SimpleStatement): SimpleStatementJson {
         return { type: "simple", content: statement.content }
     }
 
-    private static switchFromJson(json: SwitchStatementJson): SwitchStatement {
-        let statement = new SwitchStatement();
+    private switchFromJson(json: SwitchStatementJson): SwitchStatement {
+        let branches: Branch[] = [];
         for (const blockJson of json.cases) {
-            let branch = new Branch(blockJson.condition);
+            let branch = new Branch(0, blockJson.condition);
             for (const statementJson of blockJson.block) {
                 branch.block.push(this.fromJson(statementJson));
             }
-            statement.addCase(branch);
+            branches.push(branch);
         }
-        return statement;
+        return this.structogram.createSwitchStatement(branches);
     }
 
     private static switchToJson(statement: SwitchStatement): SwitchStatementJson {
@@ -118,15 +128,16 @@ export class StatementSerializer {
         return { type: "switch", cases: cases };
     }
 
-    private static ifFromJson(json: IfStatementJson): IfStatement {
-        const statement = new IfStatement(json.condition);
+    private ifFromJson(json: IfStatementJson): IfStatement {
+        let block: Statement[] = [];
+        let elseblock: Statement[] = [];
         for (const statementJson of json.block) {
-            statement.block.push(this.fromJson(statementJson));
+            block.push(this.fromJson(statementJson));
         }
         for (const statementJson of json.elseblock) {
-            statement.elseblock.push(this.fromJson(statementJson));
+            elseblock.push(this.fromJson(statementJson));
         }
-        return statement;
+        return this.structogram.createIfStatement(json.condition, block, elseblock);
     }
 
     private static ifToJson(statement: IfStatement): IfStatementJson {
@@ -141,12 +152,12 @@ export class StatementSerializer {
         return { type: "if", condition: statement.condition, block: blockStatementJsons, elseblock: elseStatementJsons };
     }
 
-    private static loopFromJson(json: LoopStatementJson): LoopStatement {
-        const statement = new LoopStatement(json.condition);
+    private loopFromJson(json: LoopStatementJson): LoopStatement {
+        let block: Statement[] = [];
         for (const statementJson of json.block) {
-            statement.block.push(this.fromJson(statementJson));
+            block.push(this.fromJson(statementJson));
         }
-        return statement;
+        return this.structogram.createLoopStatement(json.condition, block, json.type === "loop-reverse");
     }
 
     private static loopToJson(statement: LoopStatement): LoopStatementJson {
