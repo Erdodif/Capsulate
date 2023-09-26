@@ -40,16 +40,37 @@
         .condition {
             padding-inline: $struc-padding-inline;
             padding-block: $struc-padding-block;
+            padding-inline: 2em;
             position: relative;
             grid-area: condition;
             text-align: center;
             resize: both;
             &::before {
-                @include s_if_pseudo(25, 2, left);
+                content: "";
+                position: absolute;
+                top: -$struc-border-width;
+                bottom: -$struc-border-width;
+                left: .725em;
+                width: 1.125em;
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-size: 100% 100%;
+                transform: scaleY(-1);
+                background-image: url("/diag.svg");
             }
             border-bottom: $struc-border;
             &::after {
-                @include s_if_pseudo(-25, -2, right);
+                //@include s_if_pseudo(-25, -2, right);
+                content: "";
+                position: absolute;
+                top: -$struc-border-width;
+                bottom: -$struc-border-width;
+                right: .725em;
+                width: 1.125em;
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-size: 100% 100%;
+                background-image: url("/diag.svg");
             }
         }
         .true {

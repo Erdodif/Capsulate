@@ -21,7 +21,6 @@
 <style lang="scss">
     :global(.loop) {
         > .block {
-            //background: red;
             > .statement {
                 border-bottom: $struc-border;
             }

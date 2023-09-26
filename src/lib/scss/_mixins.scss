@@ -24,31 +24,34 @@
     border-collapse: collapse;
 }
 
-@mixin s_if_pseudo($skew-factor, $x-offset, $direction) {
+@mixin s_if_pseudo($_, $x-offset, $direction) {
+    $skew-factor:-0.35;
     position: absolute;
     top: 0;
+    z-index: 99;
     @if $direction == left {
         left: 0;
     } @else if $direction == right {
         right: 0;
     } @else {
-        @error "Unknown direction #{$direction}."
+        @error "Unknown direction #{$direction}.";
     }
-    transform: skewX($skew-factor * 1deg) translateX($x-offset * 250%);
+    transform: rotate($skew-factor * -1deg) translateX(10%);
     content: "";
     width: $struc-border-width;
     height: 100%;
     background: $struc-border-color;
 }
 
-@mixin s_input(){
-    input, textarea{
-        background:transparent;
+@mixin s_input() {
+    input,
+    textarea {
+        background: transparent;
         resize: none;
-        width:100%;
+        width: 100%;
         height: 100%;
         font-size: 1em;
-        border:unset;
+        border: unset;
         text-align: center;
         box-sizing: border-box;
         outline: none;

@@ -45,10 +45,20 @@
                 position: relative;
                 text-align: center;
                 @include s_border;
-                padding-inline: $struc-padding-inline;
+                padding-inline: 2em;
                 padding-block: $struc-padding-block;
                 &::before {
-                    @include s_if_pseudo(20, 0.6, left);
+                    content: "";
+                    position: absolute;
+                    top: -$struc-border-width;
+                    bottom: -$struc-border-width;
+                    left: 0.725em;
+                    width: 1.125em;
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    background-size: 100% 100%;
+                    transform: scaleY(-1);
+                    background-image: url("/diag.svg");
                 }
                 border-bottom: $struc-border;
                 &__else {
@@ -56,7 +66,16 @@
                         content: unset;
                     }
                     &::after {
-                        @include s_if_pseudo(-20, -0.6, right);
+                        content: "";
+                        position: absolute;
+                        top: -$struc-border-width;
+                        bottom: -$struc-border-width;
+                        right: 0.725em;
+                        width: 1.125em;
+                        background-repeat: no-repeat;
+                        background-size: cover;
+                        background-size: 100% 100%;
+                        background-image: url("/diag.svg");
                     }
                 }
             }
