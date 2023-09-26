@@ -49,6 +49,9 @@
             }
             background-color: $struc-background;
             .condition {
+                input {
+                    outline: none;
+                }
                 position: relative;
                 text-align: center;
                 @include s_border;
