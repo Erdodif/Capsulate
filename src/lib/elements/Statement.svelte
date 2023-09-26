@@ -13,6 +13,9 @@
     import SwitchElement from "./statements/SwitchElement.svelte";
     import type { AnyStatementStore } from "$lib/stores/structogram";
 
+    /**
+     * Don't beleive TypeScript, it just cannot type-check generics correctly
+     */
     export let statement: AnyStatementStore;
 </script>
 
