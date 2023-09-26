@@ -4,6 +4,7 @@
         Statement as StatementClass,
     } from "$lib/classes/Statement";
     import type { StatementStore } from "$lib/stores/structogram";
+    import CustomTextArea from "../CustomTextArea.svelte";
     import Statement from "../Statement.svelte";
 
     export let statement: StatementStore<IfStatement>;
@@ -11,7 +12,7 @@
 
 <div class="if">
     <div class="condition">
-        <textarea name="condition" rows="1" bind:value={$statement.condition} />
+        <CustomTextArea name="condition" bind:value={$statement.condition} />
     </div>
     <div class="true">
         {#each $statement.block.map( (stmt) => statement.getStoreOf(stmt) ) as element}
@@ -37,7 +38,8 @@
             background-color: $struc-color;
         }
         .condition {
-            @include s_input;
+            padding-inline: $struc-padding-inline;
+            padding-block: $struc-padding-block;
             position: relative;
             grid-area: condition;
             text-align: center;

@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { LoopStatement } from "$lib/classes/Statement";
     import type { StatementStore } from "$lib/stores/structogram";
+    import CustomTextArea from "../CustomTextArea.svelte";
     import Statement from "../Statement.svelte";
 
     export let statement: StatementStore<LoopStatement>;
@@ -8,10 +9,10 @@
 
 <div class={`${$statement.reversed ? "loop__reversed" : ""} loop`}>
     <div class="condition">
-        <input type="text" name="condition" bind:value={$statement.condition}>
+        <CustomTextArea name="simple" bind:value={$statement.condition} />
     </div>
     <div class="block">
-        {#each $statement.block.map(stmt => statement.getStoreOf(stmt)) as element}
+        {#each $statement.block.map( (stmt) => statement.getStoreOf(stmt) ) as element}
             <Statement statement={element} />
         {/each}
     </div>
@@ -52,7 +53,8 @@
             border-bottom: $struc-border;
         }
         .condition {
-            @include s_input;
+            padding-inline: $struc-padding-inline;
+            padding-block: $struc-padding-block;
             grid-area: condition;
             text-align: center;
         }

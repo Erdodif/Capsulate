@@ -1,23 +1,24 @@
 <script lang="ts">
     import InputOverlay from "./InputOverlay.svelte";
     import Statement from "./Statement.svelte";
-    import type { Statement as StatementClass} from "$lib/classes/Statement";
+    import type { Statement as StatementClass } from "$lib/classes/Statement";
     import type { StructogramStore } from "$lib/stores/structogram";
 
     export let structogram: StructogramStore;
-    
-    const storeOf = (statement:StatementClass) => structogram.getStoreOf(statement);
+
+    const storeOf = (statement: StatementClass) =>
+        structogram.getStoreOf(statement);
 </script>
 
 <div class="struktogram">
-    <InputOverlay/>
+    <InputOverlay />
     {#if $structogram.variant == "function"}
         <div class="struktogram__signature">
-            <input type="text" bind:value={$structogram.signature}>
+            <input type="text" bind:value={$structogram.signature} />
         </div>
     {/if}
     <div class="struktogram__block">
-        {#each $structogram.statements.map((statement)=> storeOf(statement)) as statement (statement.id)}
+        {#each $structogram.statements.map( (statement) => storeOf(statement) ) as statement (statement.id)}
             <Statement {statement} />
         {/each}
     </div>
@@ -29,10 +30,12 @@
         font-family: monospace;
     }
     .struktogram {
-        margin:1em;
+        margin: 1em;
         color: $struc-color;
         width: min(95dvw, 45rem);
         &__signature {
+            padding-inline: $struc-padding-inline;
+            padding-block: $struc-padding-block;
             @include s_input;
             position: relative;
             border-radius: 2em;
