@@ -1,7 +1,8 @@
 export type AnyStatement = SimpleStatement | IfStatement | SwitchStatement | LoopStatement
 
 export abstract class Statement {
-    readonly id: number
+    readonly id: number;
+    abstract type: string;
 
     constructor(id: number) {
         this.id = id;
@@ -11,6 +12,7 @@ export abstract class Statement {
 }
 
 export class Branch extends Statement {
+    type = "branch";
     condition: string;
     block: Statement[];
 
@@ -34,6 +36,7 @@ export class Branch extends Statement {
 }
 
 export class SimpleStatement extends Statement {
+    type = "simple";
     content: string;
 
     constructor(id: number, content: string = "") {
@@ -50,6 +53,7 @@ export class SimpleStatement extends Statement {
 }
 
 export class IfStatement extends Branch {
+    type = "if";
     elseblock: Statement[];
 
     constructor(id: number, condition: string = "", success: Statement[] = [], fail: Statement[] = []) {
@@ -76,6 +80,7 @@ export class IfStatement extends Branch {
 }
 
 export class SwitchStatement extends Statement {
+    type = "switch";
     cases: Branch[];
 
     case(index: number): Branch {
@@ -114,6 +119,7 @@ export class SwitchStatement extends Statement {
 }
 
 export class LoopStatement extends Branch {
+    type = "loop";
     reversed: boolean;
 
     constructor(id: number, condition: string = "", reversed: boolean = false, statements: Statement[] = []) {

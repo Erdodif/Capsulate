@@ -9,9 +9,9 @@
     import { StructogramSerializer } from "$lib/classes/StatementSerializer";
     import Structorgram from "$lib/classes/Structogram";
     import Structogram from "$lib/elements/Structogram.svelte";
-    import { writable } from "svelte/store";
+    import { StructogramStore } from "$lib/stores/structogram";
 
-    let struk = writable(StructogramSerializer.fromJson(
+    let struk = new StructogramStore(StructogramSerializer.fromJson(
     {
         type:"function",
         signature:"idk man",

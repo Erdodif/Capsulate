@@ -1,10 +1,10 @@
 <script lang="ts">
-    import type Structogram from "$lib/classes/Structogram";
-    import type { Writable } from "svelte/store";
     import InputOverlay from "./InputOverlay.svelte";
     import Statement from "./Statement.svelte";
+    import type { StructogramStore } from "$lib/stores/structogram";
 
-    export let structogram: Writable<Structogram>;
+    export let structogram: StructogramStore;
+    const storeOf = (statement:Statement) => structogram.getStoreOf(statement);
 </script>
 
 <div class="struktogram">
@@ -15,7 +15,7 @@
         </div>
     {/if}
     <div class="struktogram__block">
-        {#each $structogram.statements as statement}
+        {#each $structogram.statements.map((statement)=> storeOf(statement)) as statement (statement.id)}
             <Statement {statement} />
         {/each}
     </div>

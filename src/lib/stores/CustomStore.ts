@@ -5,6 +5,15 @@ export class CustomStore<T> implements Writable<T> {
     protected _value: T;
     protected callbacks: Array<Subscriber<T>>
 
+    /**
+     * Returns the currently held value of the store.
+     * 
+     * Note that this is a plain data, and DOES NOT follow future changes, and will not be updated!
+     */
+    get currentValue():T{
+        return this._value;
+    }
+
     constructor(initialValue: T) {
         this._value = initialValue;
         this.callbacks = [];
@@ -37,8 +46,8 @@ export class CustomStore<T> implements Writable<T> {
     }
 }
 
-export abstract class CustomDerivedStore<T,E> extends CustomStore<T> {
-    protected _store: CustomStore<E>;
+export abstract class CustomDerivedStore<T, E, R extends CustomStore<E>> extends CustomStore<T> {
+    protected _store: R;
     protected _unsubscibeParent;
 
     /**
@@ -47,9 +56,9 @@ export abstract class CustomDerivedStore<T,E> extends CustomStore<T> {
      * This method MUST deretmine whether the inner value changed, and act accordingly
      * @param newValue 
      */
-    protected abstract parentChanged(newValue: E): boolean;
+    protected abstract parentChanged(newValue:E): boolean;
 
-    constructor(store: CustomStore<E>, initValue: T) {
+    constructor(store: R, initValue: T) {
         super(initValue);
         this.callbacks = [];
         this._store = store;
