@@ -6,25 +6,33 @@
 
     const input = () => {
         element.style.height = "0px";
-        element.style.height =
-            element.scrollHeight + "px";
+        element.style.height = element.scrollHeight + "px";
     };
 
-    onMount(()=>{
+    onMount(() => {
         input();
-    })
+    });
 
     let element: HTMLTextAreaElement;
 </script>
 
-<svelte:window on:resize={()=>input()}/>
+<svelte:window on:resize={() => input()} />
 
-<textarea bind:this={element} {name} rows={1} on:input={input} bind:value />
+<textarea
+    bind:this={element}
+    {name}
+    rows={1}
+    on:input={input}
+    bind:value
+    on:drop|capture={(e) => {
+        if (e.dataTransfer?.getData("application/structogram")) return false;
+    }}
+/>
 
 <style lang="scss">
-    textarea{
+    textarea {
         width: 100%;
-        margin:0;
+        margin: 0;
         padding: 0;
         min-height: 1em;
         resize: none;
