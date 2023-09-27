@@ -3,11 +3,19 @@
     import Statement from "./Statement.svelte";
     import type { Statement as StatementClass } from "$lib/classes/Statement";
     import type { StructogramStore } from "$lib/stores/structogram";
+    import DropZone from "./DropZone.svelte";
 
     export let structogram: StructogramStore;
 
     const storeOf = (statement: StatementClass) =>
         structogram.getStoreOf(statement);
+
+    const handleDrop = (
+        data: CustomEvent<Map<string, string>>,
+        index: number
+    ) => {
+        console.log(`at ${index}`);
+    };
 </script>
 
 <div class="struktogram">
@@ -18,8 +26,16 @@
         </div>
     {/if}
     <div class="struktogram__block">
-        {#each $structogram.statements.map( (statement) => storeOf(statement) ) as statement (statement.id)}
+        <DropZone
+            on:drop={(data) => handleDrop(data, 0)}
+            mimes={["text", "application/json", "application/structogram"]}
+        />
+        {#each $structogram.statements.map( (statement) => storeOf(statement) ) as statement, index (statement.id)}
             <Statement {statement} />
+            <DropZone
+                on:drop={(data) => handleDrop(data, index + 1)}
+                mimes={["text", "application/json", "application/structogram"]}
+            />
         {/each}
     </div>
 </div>
@@ -29,14 +45,24 @@
         font-size: 1rem;
         font-family: monospace;
     }
+    :global(.struktogram__block > .dropzone) {
+        min-width: 3em;
+        min-height: 2em;
+    }
+    :global(.struktogram__block > .dropzone.above) {
+        color: red;
+        background: green !important;
+    }
     .struktogram {
         margin: 1em;
         color: $struc-color;
         width: min(95dvw, 45rem);
         &__signature {
+            input {
+                @include s_input;
+            }
             padding-inline: $struc-padding-inline;
             padding-block: $struc-padding-block;
-            @include s_input;
             position: relative;
             border-radius: 2em;
             width: fit-content;
@@ -55,6 +81,7 @@
             background-color: $struc-background;
         }
         &__block {
+            position: relative;
             border: $struc-border;
             background-color: $struc-background;
             :global(> .statement) {
