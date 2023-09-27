@@ -3,8 +3,6 @@
         SwitchStatement,
         IfStatement,
         LoopStatement,
-        type AnyStatement,
-        type Statement,
         SimpleStatement,
     } from "$lib/classes/Statement";
     import IfElement from "./statements/IfElement.svelte";
@@ -16,7 +14,7 @@
     /**
      * Don't beleive TypeScript, it just cannot type-check generics correctly
      */
-    export let statement: AnyStatementStore;
+    export let statement:any//: AnyStatementStore;
 </script>
 
 <div class="statement">
