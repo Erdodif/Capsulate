@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { onMount } from "svelte";
+
     export let value: string;
     export let name: string;
 
@@ -8,12 +10,16 @@
             element.scrollHeight + "px";
     };
 
+    onMount(()=>{
+        input();
+    })
+
     let element: HTMLTextAreaElement;
 </script>
 
-<svelte:window on:resize={input}/>
+<svelte:window on:resize={()=>input()}/>
 
-<textarea bind:this={element} {name} rows={1} on:input bind:value />
+<textarea bind:this={element} {name} rows={1} on:input={input} bind:value />
 
 <style lang="scss">
     textarea{
