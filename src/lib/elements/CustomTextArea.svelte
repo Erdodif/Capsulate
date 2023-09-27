@@ -2,14 +2,18 @@
     export let value: string;
     export let name: string;
 
-    const handleChange = (e: Event) => {
-        (e.target as HTMLElement).style.height = "0px";
-        (e.target as HTMLElement).style.height =
-            (e.target as HTMLElement).scrollHeight + "px";
+    const input = () => {
+        element.style.height = "0px";
+        element.style.height =
+            element.scrollHeight + "px";
     };
+
+    let element: HTMLTextAreaElement;
 </script>
 
-<textarea {name} rows={1} on:input={handleChange} bind:value />
+<svelte:window on:resize={input}/>
+
+<textarea bind:this={element} {name} rows={1} on:input bind:value />
 
 <style lang="scss">
     textarea{
