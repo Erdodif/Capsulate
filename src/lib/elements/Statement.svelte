@@ -9,8 +9,7 @@
     import LoopElement from "./statements/LoopElement.svelte";
     import SimpleElement from "./statements/SimpleElement.svelte";
     import SwitchElement from "./statements/SwitchElement.svelte";
-    import type { AnyStatementStore } from "$lib/stores/structogram";
-
+    
     /**
      * Don't beleive TypeScript, it just cannot type-check generics correctly
      */
