@@ -48,8 +48,8 @@
             &::before {
                 content: "";
                 position: absolute;
-                top: -$struc-border-width;
-                bottom: -$struc-border-width;
+                top: calc($struc-border-width / -2);
+                bottom: calc($struc-border-width / -2);
                 left: .725em;
                 width: 1.125em;
                 background-repeat: no-repeat;
@@ -63,8 +63,8 @@
                 //@include s_if_pseudo(-25, -2, right);
                 content: "";
                 position: absolute;
-                top: -$struc-border-width;
-                bottom: -$struc-border-width;
+                top: calc($struc-border-width / -2);
+                bottom: calc($struc-border-width / -2);
                 right: .725em;
                 width: 1.125em;
                 background-repeat: no-repeat;
