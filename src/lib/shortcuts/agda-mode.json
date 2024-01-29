@@ -12,6 +12,10 @@
         "keyBind":"\\Gl"
     },
     {
+        "character": "λ",
+        "keyBind":"\\lambda"
+    },
+    {
         "character": "ᵢ",
         "keyBind":"\\_i"
     },
@@ -52,8 +56,108 @@
         "keyBind":"\\_n"
     },
     {
+        "character": "𝔸",
+        "keyBind": "\\bA"
+    },
+    {
+        "character": "𝔹",
+        "keyBind": "\\bB"
+    },
+    {
+        "character": "ℂ",
+        "keyBind": "\\bC"
+    },
+    {
+        "character": "𝔻",
+        "keyBind": "\\bD"
+    },
+    {
+        "character": "𝔼",
+        "keyBind": "\\bE"
+    },
+    {
+        "character": "𝔽",
+        "keyBind": "\\bF"
+    },
+    {
+        "character": "𝔾",
+        "keyBind": "\\bG"
+    },
+    {
+        "character": "ℍ",
+        "keyBind": "\\bH"
+    },
+    {
+        "character": "𝕀",
+        "keyBind": "\\bI"
+    },
+    {
+        "character": "𝕁",
+        "keyBind": "\\bJ"
+    },
+    {
+        "character": "𝕂",
+        "keyBind": "\\bK"
+    },
+    {
+        "character": "𝕃",
+        "keyBind": "\\bL"
+    },
+    {
+        "character": "𝕄",
+        "keyBind": "\\bM"
+    },
+    {
         "character": "ℕ",
         "keyBind": "\\bN"
+    },
+    {
+        "character": "𝕆",
+        "keyBind": "\\bO"
+    },
+    {
+        "character": "ℙ",
+        "keyBind": "\\bP"
+    },
+    {
+        "character": "ℚ",
+        "keyBind": "\\bQ"
+    },
+    {
+        "character": "ℝ",
+        "keyBind": "\\bR"
+    },
+    {
+        "character": "𝕊",
+        "keyBind": "\\bS"
+    },
+    {
+        "character": "𝕋",
+        "keyBind": "\\bT"
+    },
+    {
+        "character": "𝕌",
+        "keyBind": "\\bU"
+    },
+    {
+        "character": "𝕍",
+        "keyBind": "\\bV"
+    },
+    {
+        "character": "𝕎",
+        "keyBind": "\\bW"
+    },
+    {
+        "character": "𝕏",
+        "keyBind": "\\bX"
+    },
+    {
+        "character": "𝕐",
+        "keyBind": "\\bY"
+    },
+    {
+        "character": "ℤ",
+        "keyBind": "\\bZ"
     },
     {
         "character": "↑",
