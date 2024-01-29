@@ -139,3 +139,45 @@ export class LoopStatement extends Branch {
         return true;
     }
 }
+
+// ADVANCED
+
+export class AwaitStatement extends SimpleStatement {
+    type = "await";
+    content: string;
+
+    constructor(id: number, content: string = "") {
+        super(id);
+        this.content = content;
+    }
+
+    equals(other: Statement | undefined): boolean {
+        if (other == undefined || other.id !== this.id || !(other instanceof AwaitStatement)) {
+            return false;
+        }
+        return this.content == other.content;
+    }
+}
+
+export class ParallelStatement extends Statement {
+    type = "parallel";
+    threads: Statement[][];
+
+    constructor(id: number, ...threads: Statement[][]) {
+        super(id);
+        this.threads = threads;
+    }
+
+    equals(other: Statement | undefined): boolean {
+        if (other == undefined || other.id !== this.id || !(other instanceof ParallelStatement)) {
+            return false;
+        }
+        for (let i = 0; i < this.threads.length; i++) {
+            for (let j = 0; j < this.threads[i].length; j++) {
+                if (!this.threads[i][j].equals(other.threads[i][j])) return false;
+            }
+        }
+        return true;
+    }
+}
+

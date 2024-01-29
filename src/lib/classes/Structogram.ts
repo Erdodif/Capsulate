@@ -1,4 +1,5 @@
 import SwitchElement from "$lib/elements/statements/SwitchElement.svelte";
+import { readonly } from "svelte/store";
 import { Branch, IfStatement, LoopStatement, SimpleStatement, Statement, SwitchStatement } from "./Statement"
 
 export type StructogramVariants = "program" | "function" | "async";

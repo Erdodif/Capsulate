@@ -4,12 +4,14 @@
         IfStatement,
         LoopStatement,
         SimpleStatement,
+        Statement as StatementClass
     } from "$lib/classes/Statement";
     import IfElement from "./statements/IfElement.svelte";
     import LoopElement from "./statements/LoopElement.svelte";
     import SimpleElement from "./statements/SimpleElement.svelte";
     import SwitchElement from "./statements/SwitchElement.svelte";
     import { StatementSerializer } from "$lib/classes/StatementSerializer";
+    import { statementPreview } from "$lib/stores/dndStatementPreview";
 
     /**
      * Don't beleive TypeScript, it just cannot type-check generics correctly
@@ -19,15 +21,13 @@
     let dragged: boolean = false;
 
     const dragStart = (e: DragEvent | null) => {
+        //alert("Drag started")
         if (e?.dataTransfer == null) {
             return;
         }
-        dragged = true;
-        setTimeout(() => {
-            dragged = false;
-        }, 0);
+        $statementPreview = statement as StatementClass;
         e.dataTransfer.setData("text", "statement");
-        e.dataTransfer.setData("text/plain", $statement.type);
+        e.dataTransfer.setData("text/plain", ($statement as StatementClass).type);
         e.dataTransfer.setData(
             "application/json",
             JSON.stringify(StatementSerializer.toJson($statement))
@@ -42,6 +42,10 @@
             })
         );
         e.dataTransfer.effectAllowed = "move";
+        dragged = true;
+        setTimeout(() => {
+            dragged = false;
+        }, 0);
     };
 </script>
 
@@ -53,7 +57,7 @@
     on:dragend={() => {
         dragged = false;
     }}
-    on:dragstart|capture|self={dragStart}
+    on:dragstart|stopPropagation|capture|self={dragStart}
     role="cell"
     tabindex="0"
     on:dragend|preventDefault
