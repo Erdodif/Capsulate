@@ -63,7 +63,7 @@ export abstract class CustomDerivedStore<T, E, R extends CustomStore<E>> extends
         this.callbacks = [];
         this._store = store;
         this._unsubscibeParent = this._store.subscribe((newValue) => {
-            if (this.parentChanged(newValue)) this.nofity();
+            if (this.parentChanged(newValue)) this.notify();
         });
     }
 
@@ -77,7 +77,7 @@ export abstract class CustomDerivedStore<T, E, R extends CustomStore<E>> extends
         callback(this._value);
         if (this.callbacks.length == 0) {
             this._unsubscibeParent = this._store.subscribe((newValue) => {
-                if (this.parentChanged(newValue)) this.nofity();
+                if (this.parentChanged(newValue)) this.notify();
             });
         }
         this.callbacks.push(callback);
@@ -91,7 +91,7 @@ export abstract class CustomDerivedStore<T, E, R extends CustomStore<E>> extends
         }
     }
 
-    nofity() {
+    notify() {
         for (const callback of this.callbacks) {
             callback(this._value);
         }

@@ -16,6 +16,17 @@
     ) => {
         console.log(`at ${index}`);
     };
+
+    const excludeAt: (_: number) => number[] = (index: number) => {
+        let ids: number[] = [];
+        if (index >= 0 && $structogram.statements.length > 0) {
+            ids.push($structogram.statements[index].id);
+        }
+        if (index < $structogram.statements.length - 1) {
+            ids.push($structogram.statements[index + 1].id);
+        }
+        return ids;
+    };
 </script>
 
 <div class="struktogram">
@@ -29,12 +40,14 @@
         <DropZone
             on:drop={(data) => handleDrop(data, 0)}
             mimes={["text", "application/json", "application/structogram"]}
+            exclude={excludeAt(-1)}
         />
         {#each $structogram.statements.map( (statement) => storeOf(statement) ) as statement, index (statement.id)}
             <Statement {statement} />
             <DropZone
                 on:drop={(data) => handleDrop(data, index + 1)}
                 mimes={["text", "application/json", "application/structogram"]}
+                exclude={excludeAt(index)}
             />
         {/each}
     </div>
@@ -44,14 +57,6 @@
     :global(.struktogram, .statement) {
         font-size: 1rem;
         font-family: monospace;
-    }
-    :global(.struktogram__block > .dropzone) {
-        min-width: 3em;
-        min-height: 2em;
-    }
-    :global(.struktogram__block > .dropzone.above) {
-        color: red;
-        background: green !important;
     }
     .struktogram {
         margin: 1em;
@@ -90,6 +95,9 @@
                     border-bottom: unset;
                 }
             }
+        }
+        .dropzone.preview {
+            border-bottom: $struc-border;
         }
     }
 </style>

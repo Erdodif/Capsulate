@@ -4,30 +4,40 @@
         IfStatement,
         LoopStatement,
         SimpleStatement,
-        Statement as StatementClass
+        Statement as StatementClass,
     } from "$lib/classes/Statement";
     import IfElement from "./statements/IfElement.svelte";
     import LoopElement from "./statements/LoopElement.svelte";
     import SimpleElement from "./statements/SimpleElement.svelte";
     import SwitchElement from "./statements/SwitchElement.svelte";
     import { StatementSerializer } from "$lib/classes/StatementSerializer";
-    import { statementPreview } from "$lib/stores/dndStatementPreview";
+    import {
+        statementPreview,
+        currentDropzoneID,
+        previewID,
+    } from "$lib/stores/dndStatementPreview";
+    import { writable } from "svelte/store";
 
     /**
      * Don't beleive TypeScript, it just cannot type-check generics correctly
      */
     export let statement: any; //: AnyStatementStore;
 
-    let dragged: boolean = false;
+    let dragged = writable(false);
 
     const dragStart = (e: DragEvent | null) => {
+        $dragged = true;
         //alert("Drag started")
         if (e?.dataTransfer == null) {
             return;
         }
-        $statementPreview = statement as StatementClass;
+        statementPreview.set(statement as StatementClass);
+        $previewID = ($statement as StatementClass).id;
         e.dataTransfer.setData("text", "statement");
-        e.dataTransfer.setData("text/plain", ($statement as StatementClass).type);
+        e.dataTransfer.setData(
+            "text/plain",
+            ($statement as StatementClass).type
+        );
         e.dataTransfer.setData(
             "application/json",
             JSON.stringify(StatementSerializer.toJson($statement))
@@ -42,26 +52,37 @@
             })
         );
         e.dataTransfer.effectAllowed = "move";
-        dragged = true;
         setTimeout(() => {
-            dragged = false;
-        }, 0);
+            $dragged = false;
+        }, 1);
     };
 </script>
 
 <svelte:window />
 
 <div
-    class={`statement ${dragged ? "dragged" : ""}`}
+    class={`statement ${$dragged ? "dragged" : ""} ${
+        !$dragged && $previewID == $statement.id
+            ? "under-preview"
+            : ""
+    }`}
     draggable="true"
     on:dragend={() => {
-        dragged = false;
+        $dragged = false;
     }}
-    on:dragstart|stopPropagation|capture|self={dragStart}
+    on:dragstart|capture|self={dragStart}
     role="cell"
     tabindex="0"
-    on:dragend|preventDefault
-    on:drop|preventDefault
+    on:dragend|preventDefault={(_)=>{
+        $previewID = -1;
+        $statementPreview = null;
+        $currentDropzoneID = -1;
+    }}
+    on:drop|preventDefault={(_)=>{
+        $previewID = -1;
+        $statementPreview = null;
+        $currentDropzoneID = -1;
+    }}
 >
     {#if $statement instanceof SwitchStatement}
         <!-- @ts-ignore -->
@@ -81,12 +102,39 @@
 </div>
 
 <style lang="scss">
-    :global(.statement.dragged) {
-        box-sizing: border-box;
-        border: $struc-border;
+    @keyframes remove {
+        0% {
+            visibility: visible;
+            opacity: 1;
+            height: 100%;
+            display: block;
+        }
+        99% {
+            height: 0%;
+            opacity: 0.5;
+            visibility: visible;
+            display: block;
+        }
+        100% {
+            visibility: none;
+            display: none;
+            z-index: -1000;
+        }
     }
     .statement {
         color: $struc-color;
+        display: block;
         background: $struc-background;
+        &.dragged {
+            box-sizing: border-box;
+            border: 0.2em dashed $struc-border-color !important;
+        }
+    }
+    .statement.under-preview {
+        animation: remove 600ms ease-in-out 65ms normal forwards;
+        font-size: smaller;
+        :global(.dropzone) {
+            display: none;
+        }
     }
 </style>

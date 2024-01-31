@@ -19,7 +19,7 @@
 </div>
 
 <style lang="scss">
-    :global(.loop) {
+    /*:global(.loop) {
         > .block {
             > .statement {
                 border-bottom: $struc-border;
@@ -39,7 +39,7 @@
                 border-top: unset;
             }
         }
-    }
+    }*/
     .loop {
         display: grid;
         grid-template-columns: 2em 1fr;

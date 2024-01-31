@@ -1,30 +1,26 @@
 <script lang="ts">
     import type { Statement as StatementClass } from "$lib/classes/Statement";
     import { createEventDispatcher } from "svelte";
-    import { readonly, writable, type Writable } from "svelte/store";
+    import { writable, type Writable } from "svelte/store";
     import Statement from "./Statement.svelte";
     import {
-        StatementSerializer,
-        type StatementJson,
-    } from "$lib/classes/StatementSerializer";
-    import type { StatementStore } from "$lib/stores/structogram";
-    import {
         statementPreview,
-        previewID,
-        currentPreviewID,
+        dropzoneID,
+        currentDropzoneID,
+        previewID
     } from "$lib/stores/dndStatementPreview";
     const dispatch = createEventDispatcher();
+    const PREVIEW_TRIGGER_DELAY = 210;
 
-    let ID = previewID.next();
+    let ID = dropzoneID.next();
 
+    export let exclude: number[] = [];
     export let mimes: string[] = ["text"];
 
     let data: Map<string, string> = new Map();
 
     let accept = writable(false); // TODO - Enforce in events
-    let above = writable(false);
-    let preview = writable(false);
-    let statement: Writable<StatementClass> = writable();
+    let statement: Writable<StatementClass | null> = writable();
 </script>
 
 <svelte:window
@@ -32,48 +28,56 @@
         if (
             mimes.findIndex(
                 (mime) => e.dataTransfer?.getData(mime) ?? "" !== ""
-            ) !== -1
+            ) !== -1 &&
+            //!exclude.find((id) => ($statementPreview?.id ?? -1) == id)
+        !exclude.find((id) => ($previewID ?? -1) == id)
         ) {
-            setTimeout(() => {
-                $accept = true;
-            }, 3);
+            $accept = true;
         } else {
             $accept = false;
         }
     }}
-    on:dragend|capture={(e) => {
+    on:dragend|capture={(_) => {
         $accept = false;
-        $preview = false;
+        $currentDropzoneID = -1;
+        $statementPreview = null;
+    }}
+    on:drop|capture={(_) => {
+        $currentDropzoneID = -1;
+        $statementPreview = null;
+        $previewID = -1;
     }}
 />
 
 <aside
-    class={`dropzone ${$above ? "above" : ""} ${
-        !$preview && $accept ? "show" : "behind-all"
-    } ${$preview ? "preview" : ""}`}
+    class={`dropzone ${
+        $currentDropzoneID == ID ? "preview" : $accept ? "show" : "behind-all"
+    }`}
     on:dragenter|preventDefault={(e) => {
-        if (mimes.map((mime) => e.dataTransfer?.getData(mime))) {
-            $above = true;
-        }
         dispatch("dragenter", e);
     }}
-    on:dragleave|preventDefault={(e) => {
-        $above = false;
-        dispatch("dragleave", e);
+    on:dragleave|preventDefault={(_) => {
+        if (!($currentDropzoneID == ID)) {
+            $currentDropzoneID = -1;
+        }
     }}
-    on:dragover|preventDefault={(e) => {
-        if (mimes.find((mime) => mime == "application/structogram")) {
-            $above = true;
-            $currentPreviewID = ID;
-            setTimeout(() => {
-                if ($above && $currentPreviewID == ID && !$preview) {
-                    preview.set(true);
-                    statement.set($statementPreview);
-                }
-                else{
-                    preview.set(false);
-                }
-            }, 500);
+    on:dragover|preventDefault={(_) => {
+        if ($currentDropzoneID != ID && $accept) {
+            if (mimes.find((mime) => mime == "application/structogram")) {
+                let above = true;
+                $statement = $statementPreview;
+                setTimeout(() => {
+                    if (above) {
+                        if ($currentDropzoneID != ID) {
+                            $currentDropzoneID = ID;
+                        }
+                    } else {
+                        if ($currentDropzoneID == ID) {
+                            $currentDropzoneID = -1;
+                        }
+                    }
+                }, PREVIEW_TRIGGER_DELAY);
+            }
         }
     }}
     on:drop|capture={(e) => {
@@ -83,29 +87,50 @@
             }
         }
         dispatch("drop", data);
-        $above = false;
-        $preview = false;
+        if ($currentDropzoneID == ID) {
+            $currentDropzoneID = -1;
+        }
         return true;
     }}
 >
-    {#if $preview && $currentPreviewID == ID}
-        <div class="preview">
+    {#if $currentDropzoneID == ID && $statementPreview}
+        <div
+            id="preview target"
+            on:dragleave|capture={(e) => {
+                if ($currentDropzoneID == ID) {
+                    $currentDropzoneID = -1;
+                }
+                dispatch("dragleave", e);
+            }}
+            on:drop|capture={(e) => {
+                for (const mime of mimes) {
+                    if (e.dataTransfer && e.dataTransfer.getData(mime) !== "") {
+                        data.set(mime, e.dataTransfer.getData(mime));
+                    }
+                }
+                dispatch("drop", data);
+                if ($currentDropzoneID == ID) {
+                    $currentDropzoneID = -1;
+                }
+                return true;
+            }}
+            role="presentation"
+        >
             <Statement statement={$statement} />
         </div>
     {/if}
 </aside>
 
 <style lang="scss">
-    //Other style shall be set in :global() context
     .dropzone {
-        min-height: 0.25em;
-        height: 0.5em;
+        min-height: unset !important;
         display: block;
         position: absolute;
         left: 0;
         right: 0;
-        //bottom: 0;
         &.show {
+            height: 0.35em !important;
+            margin-top: -1.5 * $struc-border-width;
             z-index: 100;
             background: $secondary;
             opacity: 0.1;
@@ -118,11 +143,13 @@
             background-color: transparent;
         }
         &.preview {
-            border-top: $struc-border;
+            min-height: 1em;
             margin-top: 0em;
             z-index: 100;
-            height: 2em;
+            height: auto;
+            display: block;
             position: relative;
+            border-bottom: $struc-border;
         }
     }
 </style>
