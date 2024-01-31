@@ -4,6 +4,11 @@
     import type { Statement as StatementClass } from "$lib/classes/Statement";
     import type { StructogramStore } from "$lib/stores/structogram";
     import DropZone from "./DropZone.svelte";
+    import { statementPreview } from "$lib/stores/dndStatementPreview";
+    import {
+        StatementSerializer,
+        type StatementJson,
+    } from "$lib/classes/StatementSerializer";
 
     export let structogram: StructogramStore;
 
@@ -14,7 +19,31 @@
         data: CustomEvent<Map<string, string>>,
         index: number
     ) => {
-        console.log(`at ${index}`);
+        if (
+            data.detail.get("application/structogram") ||
+            data.detail.get("application/json")
+        ) {
+            let json = JSON.parse(
+                data.detail.get("application/structogram") ??
+                    data.detail.get("application/json") ??
+                    "{}"
+            );
+            let statement: StatementClass;
+            let behind = false;
+            if ($structogram.has(json.id)) {
+                let pos = $structogram.statements.findIndex(
+                    (statement) => statement.id == json.id
+                );
+                behind = pos !== -1 && pos < index;
+                statement = $structogram.removeStatementById(json.id)!;
+            } else {
+                let serializer = new StatementSerializer($structogram);
+                statement = serializer.fromJson(json);
+            }
+            structogram.insertAt(index + (behind ? 0 : 1), statement);
+            //TODO addin
+            console.log(`insert at ${index + 1}`);
+        }
     };
 
     const excludeAt: (_: number) => number[] = (index: number) => {
@@ -38,14 +67,14 @@
     {/if}
     <div class="struktogram__block">
         <DropZone
-            on:drop={(data) => handleDrop(data, 0)}
+            on:drop={(data) => handleDrop(data, -1)}
             mimes={["text", "application/json", "application/structogram"]}
             exclude={excludeAt(-1)}
         />
         {#each $structogram.statements.map( (statement) => storeOf(statement) ) as statement, index (statement.id)}
             <Statement {statement} />
             <DropZone
-                on:drop={(data) => handleDrop(data, index + 1)}
+                on:drop={(data) => handleDrop(data, index)}
                 mimes={["text", "application/json", "application/structogram"]}
                 exclude={excludeAt(index)}
             />

@@ -34,17 +34,14 @@
         setTransferImage(dt);
         dt.setData("text", "statement");
         dt.setData("text/plain", ($statement as StatementClass).type);
-        dt.setData(
-            "application/json",
-            JSON.stringify(StatementSerializer.toJson($statement))
-        );
+        let json: any = StatementSerializer.toJson($statement);
+        json.id = $statement.id;
+        dt.setData("application/json", JSON.stringify(json));
         dt.setData(
             "application/structogram",
             JSON.stringify({
                 id: statement.id,
-                statement: JSON.stringify(
-                    StatementSerializer.toJson($statement)
-                ),
+                statement: JSON.stringify(json),
             })
         );
         dt.effectAllowed = "move";

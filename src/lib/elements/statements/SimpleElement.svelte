@@ -7,7 +7,7 @@
 </script>
 
 <div class="simple">
-    <CustomTextArea name="simple" bind:value={$statement.content} />
+    <CustomTextArea name="simple" bind:value={$statement.guard} />
 </div>
 
 <style lang="scss">

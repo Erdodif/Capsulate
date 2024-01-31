@@ -6,7 +6,7 @@
     import {
         statementPreview,
         dropzoneID,
-        currentDropzoneID
+        currentDropzoneID,
     } from "$lib/stores/dndStatementPreview";
     const dispatch = createEventDispatcher();
     const PREVIEW_TRIGGER_DELAY = 210;
@@ -29,7 +29,7 @@
                 (mime) => e.dataTransfer?.getData(mime) ?? "" !== ""
             ) !== -1 &&
             //!exclude.find((id) => ($statementPreview?.id ?? -1) == id)
-        !exclude.find((id) => ($statementPreview?.id ?? -1) == id)
+            !exclude.find((id) => ($statementPreview?.id ?? -1) == id)
         ) {
             $accept = true;
         } else {
@@ -42,9 +42,10 @@
         $statementPreview = null;
     }}
     on:drop|capture={(_) => {
-        $currentDropzoneID = -1;
-        $statementPreview = null;
-        console.log("global drop");
+        if ($statementPreview) {
+            $currentDropzoneID = -1;
+            $statementPreview = null;
+        }
     }}
 />
 
@@ -118,6 +119,7 @@
             <Statement statement={$statement} preview />
         </div>
     {/if}
+    <slot />
 </aside>
 
 <style lang="scss">
@@ -128,7 +130,7 @@
         left: 0;
         right: 0;
         &.show {
-            height: 0.35em !important;
+            height: 0.5em !important;
             margin-top: -1.5 * $struc-border-width;
             z-index: 100;
             background: $secondary;

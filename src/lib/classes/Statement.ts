@@ -27,7 +27,7 @@ export class Branch extends Statement {
             return false;
         }
         for (let i = 0; i < this.block.length; i++) {
-            if (!this.block[i].equals(other.block[i])) {
+            if (!this.block[i]?.equals(other.block[i])) {
                 return false;
             }
         }
@@ -37,18 +37,18 @@ export class Branch extends Statement {
 
 export class SimpleStatement extends Statement {
     type = "simple";
-    content: string;
+    guard: string;
 
     constructor(id: number, content: string = "") {
         super(id);
-        this.content = content;
+        this.guard = content;
     }
 
     equals(other: Statement | undefined): boolean {
         if (other == undefined || other.id !== this.id || !(other instanceof SimpleStatement)) {
             return false;
         }
-        return this.content == other.content;
+        return this.guard == other.guard;
     }
 }
 
@@ -66,12 +66,12 @@ export class IfStatement extends Branch {
             return false;
         }
         for (let i = 0; i < this.block.length; i++) {
-            if (!this.block[i].equals(other.block[i])) {
+            if (!this.block[i]?.equals(other.block[i])) {
                 return false;
             }
         }
         for (let i = 0; i < this.block.length; i++) {
-            if (!this.elseblock[i].equals(other.elseblock[i])) {
+            if (!this.elseblock[i]?.equals(other.elseblock[i])) {
                 return false;
             }
         }
@@ -110,7 +110,7 @@ export class SwitchStatement extends Statement {
             return false;
         }
         for (let i = 0; i < this.cases.length; i++) {
-            if (!this.cases[i].equals(other.cases[i])) {
+            if (!this.cases[i]?.equals(other.cases[i])) {
                 return false;
             }
         }
@@ -132,7 +132,7 @@ export class LoopStatement extends Branch {
             return false;
         }
         for (let i = 0; i < this.block.length; i++) {
-            if (!this.block[i].equals(other.block[i])) {
+            if (!this.block[i]?.equals(other.block[i])) {
                 return false;
             }
         }
@@ -142,20 +142,20 @@ export class LoopStatement extends Branch {
 
 // ADVANCED
 
-export class AwaitStatement extends SimpleStatement {
+export class AwaitStatement extends Statement {
     type = "await";
-    content: string;
+    guard: string;
 
-    constructor(id: number, content: string = "") {
+    constructor(id: number, guard: string = "") {
         super(id);
-        this.content = content;
+        this.guard = guard;
     }
 
     equals(other: Statement | undefined): boolean {
         if (other == undefined || other.id !== this.id || !(other instanceof AwaitStatement)) {
             return false;
         }
-        return this.content == other.content;
+        return this.guard == other.guard;
     }
 }
 
@@ -174,7 +174,7 @@ export class ParallelStatement extends Statement {
         }
         for (let i = 0; i < this.threads.length; i++) {
             for (let j = 0; j < this.threads[i].length; j++) {
-                if (!this.threads[i][j].equals(other.threads[i][j])) return false;
+                if (!this.threads[i][j]?.equals(other.threads[i][j])) return false;
             }
         }
         return true;

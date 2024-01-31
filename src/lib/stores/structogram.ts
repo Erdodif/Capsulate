@@ -30,6 +30,16 @@ export class StructogramStore extends CustomStore<Structogram>{
         }
         throw Error(`Cannot find statement on id:${id}`);
     }
+
+    removeStatement(id:number){
+        this._value.removeStatementById(id);
+    }
+
+    insertAt(index:number, statement: Statement){
+        this._value.statements.splice(index, 0, statement);
+        this._value.addStatement(statement);
+        this.notify();
+    }
 }
 
 export class StatementStore<T extends Statement> extends CustomDerivedStore<T, Structogram, StructogramStore>{
@@ -42,7 +52,7 @@ export class StatementStore<T extends Statement> extends CustomDerivedStore<T, S
     }
 
     protected parentChanged(newValue: Structogram): boolean {
-        return this._value.equals(newValue.getStatementById(this._value.id));
+        return this._value?.equals(newValue.getStatementById(this._value.id));
     }
 
     getStoreOf(statement: AnyStatement | Statement): AnyStatementStore {

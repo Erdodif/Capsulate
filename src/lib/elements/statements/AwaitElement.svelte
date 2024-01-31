@@ -7,7 +7,7 @@
 </script>
 
 <div class="await">
-    <CustomTextArea name="guard" bind:value={$statement.content} />
+    <CustomTextArea name="guard" bind:value={$statement.guard} />
 </div>
 
 <style lang="scss">

@@ -100,7 +100,7 @@ export class StatementSerializer {
     }
 
     private static simpleToJson(statement: SimpleStatement): SimpleStatementJson {
-        return { type: "simple", content: statement.content }
+        return { type: "simple", content: statement.guard }
     }
 
     private switchFromJson(json: SwitchStatementJson): SwitchStatement {
