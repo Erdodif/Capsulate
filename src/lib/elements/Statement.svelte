@@ -14,7 +14,6 @@
     import {
         statementPreview,
         currentDropzoneID,
-        previewID,
     } from "$lib/stores/dndStatementPreview";
     import { writable } from "svelte/store";
 
@@ -22,27 +21,24 @@
      * Don't beleive TypeScript, it just cannot type-check generics correctly
      */
     export let statement: any; //: AnyStatementStore;
-
-    let dragged = writable(false);
+    export let preview = false;
+    let element: HTMLDivElement;
 
     const dragStart = (e: DragEvent | null) => {
-        $dragged = true;
         //alert("Drag started")
         if (e?.dataTransfer == null) {
             return;
         }
+        let dt = e.dataTransfer;
         statementPreview.set(statement as StatementClass);
-        $previewID = ($statement as StatementClass).id;
-        e.dataTransfer.setData("text", "statement");
-        e.dataTransfer.setData(
-            "text/plain",
-            ($statement as StatementClass).type
-        );
-        e.dataTransfer.setData(
+        setTransferImage(dt);
+        dt.setData("text", "statement");
+        dt.setData("text/plain", ($statement as StatementClass).type);
+        dt.setData(
             "application/json",
             JSON.stringify(StatementSerializer.toJson($statement))
         );
-        e.dataTransfer.setData(
+        dt.setData(
             "application/structogram",
             JSON.stringify({
                 id: statement.id,
@@ -51,38 +47,46 @@
                 ),
             })
         );
-        e.dataTransfer.effectAllowed = "move";
+        dt.effectAllowed = "move";
+    };
+
+    const setTransferImage = (dt: DataTransfer) => {
+        let clone = element.cloneNode(true) as HTMLDivElement;
+        let holder = document.createElement("div");
+        clone.className = "";
+        clone.classList.add("statement");
+        clone.classList.add("dragged");
+        holder.style.position = "absolute";
+        holder.style.right = "-1px";
+        document.body.appendChild(holder);
+        holder.append(clone);
+        dt.setDragImage(clone, clone.clientWidth / 2, 0);
         setTimeout(() => {
-            $dragged = false;
+            document.body.removeChild(holder);
         }, 1);
+    };
+
+    const dragReset = (_: DragEvent) => {
+        $statementPreview = null;
+        $currentDropzoneID = -1;
     };
 </script>
 
 <svelte:window />
 
 <div
-    class={`statement ${$dragged ? "dragged" : ""} ${
-        !$dragged && $previewID == $statement.id
+    class={`statement ${
+        !preview && ($statementPreview?.id ?? -1) == $statement.id
             ? "under-preview"
             : ""
     }`}
     draggable="true"
-    on:dragend={() => {
-        $dragged = false;
-    }}
-    on:dragstart|capture|self={dragStart}
-    role="cell"
+    role="row"
     tabindex="0"
-    on:dragend|preventDefault={(_)=>{
-        $previewID = -1;
-        $statementPreview = null;
-        $currentDropzoneID = -1;
-    }}
-    on:drop|preventDefault={(_)=>{
-        $previewID = -1;
-        $statementPreview = null;
-        $currentDropzoneID = -1;
-    }}
+    on:dragstart|capture|self={dragStart}
+    on:dragend|preventDefault={dragReset}
+    on:drop|preventDefault={dragReset}
+    bind:this={element}
 >
     {#if $statement instanceof SwitchStatement}
         <!-- @ts-ignore -->
@@ -104,35 +108,39 @@
 <style lang="scss">
     @keyframes remove {
         0% {
-            visibility: visible;
-            opacity: 1;
-            height: 100%;
-            display: block;
+            opacity: 0.9 !important;
+            height: 100% !important;
+            display: block !important;
         }
         99% {
-            height: 0%;
-            opacity: 0.5;
-            visibility: visible;
-            display: block;
+            height: 0% !important;
+            opacity: 0 !important;
+            display: block !important;
+            position: relative !important;
         }
         100% {
-            visibility: none;
+            position: absolute !important;
+            visibility: none !important;
             display: none;
-            z-index: -1000;
+            z-index: -1000 !important;
         }
     }
     .statement {
+        cursor: grab;
         color: $struc-color;
         display: block;
         background: $struc-background;
         &.dragged {
+            text-overflow: ellipsis;
+            background: $secondary-variant !important;
             box-sizing: border-box;
+            max-width: 10em;
             border: 0.2em dashed $struc-border-color !important;
         }
     }
     .statement.under-preview {
-        animation: remove 600ms ease-in-out 65ms normal forwards;
-        font-size: smaller;
+        background: transparent;
+        animation: remove 250ms linear 65ms forwards;
         :global(.dropzone) {
             display: none;
         }

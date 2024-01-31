@@ -37,9 +37,10 @@
         flex-direction: row;
         flex-wrap: nowrap;
         justify-content: stretch;
-        gap: 4px;
-        background: $struc-color;
         .case {
+            &:global(:not(:first-child)) {
+                border-inline-start: $struc-border;
+            }
             background-color: $struc-background;
             .condition {
                 position: relative;
@@ -83,6 +84,74 @@
             display: flex;
             flex-direction: column;
             flex-wrap: nowrap;
+            .block {
+                //:global(.statement)
+                > :global(:not(:last-child)) {
+                    border-block-end: $struc-border;
+                }
+            }
+        }
+    }
+    :global(.dragged) {
+        & > .switch,
+        > :global(*) .switch {
+            box-sizing: border-box;
+            border: 0.2em dashed $struc-border-color;
+            background: $secondary;
+            max-width: 15em;
+            height: fit-content !important;
+            gap: 0;
+            > .case {
+                &:global(:not(:first-child)) {
+                    border-inline-start: $struc-border;
+                }
+                height: 5.25em;
+                border: unset;
+                > .condition {
+                    background: $secondary-variant;
+                }
+                > .block {
+                    height: 2em;
+                    border: unset;
+                    > :global(:not(:first-child)) {
+                        display: none;
+                    }
+                    > :global(:last-child) {
+                        border-bottom: unset;
+                    }
+                    > :global(.statement) {
+                        border-bottom: unset;
+                    }
+                }
+            }
+            > .case:not(:nth-child(-n + 4)) {
+                display: none;
+            }
+        }
+        & > :global(*) .switch {
+            margin: 0;
+            border: unset;
+            background: transparent;
+            height: fit-content;
+            box-sizing: border-box;
+            width: 100% !important;
+            > .case:not(:nth-child(-n + 2)) {
+                display: none;
+            }
+            > .case:nth-child(-n + 2) {
+                height: 2em;
+                > .condition {
+                    font-size: 0.8em;
+                    background: transparent;
+                    height: 1.25em;
+                    padding-block: 0.2em;
+                }
+                > .block {
+                    :global(*) {
+                        display: none;
+                    }
+                }
+            }
         }
     }
 </style>

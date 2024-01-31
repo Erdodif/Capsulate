@@ -6,8 +6,7 @@
     import {
         statementPreview,
         dropzoneID,
-        currentDropzoneID,
-        previewID
+        currentDropzoneID
     } from "$lib/stores/dndStatementPreview";
     const dispatch = createEventDispatcher();
     const PREVIEW_TRIGGER_DELAY = 210;
@@ -30,7 +29,7 @@
                 (mime) => e.dataTransfer?.getData(mime) ?? "" !== ""
             ) !== -1 &&
             //!exclude.find((id) => ($statementPreview?.id ?? -1) == id)
-        !exclude.find((id) => ($previewID ?? -1) == id)
+        !exclude.find((id) => ($statementPreview?.id ?? -1) == id)
         ) {
             $accept = true;
         } else {
@@ -45,7 +44,7 @@
     on:drop|capture={(_) => {
         $currentDropzoneID = -1;
         $statementPreview = null;
-        $previewID = -1;
+        console.log("global drop");
     }}
 />
 
@@ -116,7 +115,7 @@
             }}
             role="presentation"
         >
-            <Statement statement={$statement} />
+            <Statement statement={$statement} preview />
         </div>
     {/if}
 </aside>

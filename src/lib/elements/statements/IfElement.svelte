@@ -50,7 +50,7 @@
                 position: absolute;
                 top: calc($struc-border-width / -2);
                 bottom: calc($struc-border-width / -2);
-                left: .725em;
+                left: 0.725em;
                 width: 1.125em;
                 background-repeat: no-repeat;
                 background-size: cover;
@@ -65,7 +65,7 @@
                 position: absolute;
                 top: calc($struc-border-width / -2);
                 bottom: calc($struc-border-width / -2);
-                right: .725em;
+                right: 0.725em;
                 width: 1.125em;
                 background-repeat: no-repeat;
                 background-size: cover;
@@ -82,6 +82,57 @@
             grid-area: false;
             display: grid;
             align-items: stretch;
+        }
+    }
+    :global(.dragged) {
+        & > .if {
+            background-color: $secondary-variant;
+            border: 0.2em dashed $struc-border-color;
+            max-width: 15em;
+            .true {
+                background-color: $secondary-variant;
+                color: transparent;
+                & > :global(:not(:first-child)) {
+                    display: none;
+                }
+            }
+            .false {
+                background-color: $secondary-variant;
+                color: transparent;
+                & > :global(:not(:first-child)) {
+                    display: none;
+                }
+            }
+        }
+        & > :global(*) .if {
+            font-size: 0.8em;
+            .condition {
+                padding-block: 0.2em;
+            }
+            .true {
+                :global(:not(:first-child)) {
+                    display: none;
+                }
+                :global(:first-child) {
+                    color: transparent;
+                    height: 0.8em;
+                    :global(*) {
+                        display: none;
+                    }
+                }
+            }
+            .false {
+                :global(:not(:first-child)) {
+                    display: none;
+                }
+                :global(:first-child) {
+                    color: transparent;
+                    height: 0.8em;
+                    :global(*) {
+                        display: none;
+                    }
+                }
+            }
         }
     }
 </style>

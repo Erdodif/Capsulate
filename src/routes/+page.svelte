@@ -9,24 +9,78 @@
             signature: "idk man",
             statements: [
                 {
-                    type: "if",
-                    condition: "if this is it",
+                    type: "loop",
+                    condition: "if true",
                     block: [
                         {
-                            type: "loop",
-                            condition: "if true",
+                            type: "if",
+                            condition: "if this is it",
                             block: [
                                 {
-                                    type: "simple",
-                                    content: "just loopin' around",
+                                    type: "loop",
+                                    condition: "if true",
+                                    block: [
+                                        {
+                                            type: "simple",
+                                            content: "just loopin' around",
+                                        },
+                                    ],
+                                },
+                            ],
+                            elseblock: [
+                                {
+                                    type: "skip",
+                                    content: "SKIP",
                                 },
                             ],
                         },
                     ],
-                    elseblock: [
+                },
+                {
+                    type: "switch",
+                    cases: [
                         {
-                            type: "skip",
-                            content: "SKIP",
+                            condition: "1",
+                            block: [
+                                {
+                                    type: "simple",
+                                    content: "Yes",
+                                },
+                                { type: "simple", content: "More yes" },
+                            ],
+                        },
+                        {
+                            condition: "2",
+                            block: [
+                                {
+                                    type: "if",
+                                    condition: "Is yes?",
+                                    block: [
+                                        {
+                                            type: "simple",
+                                            content: "good",
+                                        },
+                                    ],
+                                    elseblock: [
+                                        { type: "skip", content: "SKIP" },
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            condition: "3",
+                            block: [
+                                {
+                                    type: "loop",
+                                    condition: "no?",
+                                    block: [
+                                        {
+                                            type: "simple",
+                                            content: "ok",
+                                        },
+                                    ],
+                                },
+                            ],
                         },
                     ],
                 },
@@ -44,14 +98,27 @@
                                             type: "simple",
                                             content: "Yes",
                                         },
+                                        { type: "simple", content: "More yes" },
                                     ],
                                 },
                                 {
                                     condition: "2",
                                     block: [
                                         {
-                                            type: "simple",
-                                            content: "Maybe",
+                                            type: "if",
+                                            condition: "Is yes?",
+                                            block: [
+                                                {
+                                                    type: "simple",
+                                                    content: "good",
+                                                },
+                                            ],
+                                            elseblock: [
+                                                {
+                                                    type: "skip",
+                                                    content: "SKIP",
+                                                },
+                                            ],
                                         },
                                     ],
                                 },
@@ -59,8 +126,14 @@
                                     condition: "3",
                                     block: [
                                         {
-                                            type: "simple",
-                                            content: "No",
+                                            type: "loop",
+                                            condition: "no?",
+                                            block: [
+                                                {
+                                                    type: "simple",
+                                                    content: "ok",
+                                                },
+                                            ],
                                         },
                                     ],
                                 },
